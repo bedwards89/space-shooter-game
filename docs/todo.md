@@ -4,15 +4,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 ---
 
-## Phase 1 — Asset Pipeline & Licensing
-
-- [ ] Download Kenney "Space Shooter Redux" sprites and add to `public/assets/sprites/`
-- [ ] Download Kenney "Sci-fi Sounds" SFX pack and add to `public/assets/audio/sfx/`
-- [ ] Source 4 lo-fi music tracks (Pixabay / FreePD / Incompetech) and add to `public/assets/audio/music/`
-- [ ] Download Kenney pixel font and add to `public/assets/fonts/`
-- [ ] Fill out `public/assets/ATTRIBUTIONS.md` with every asset entry
-- [ ] Write asset manifest test: every file in `public/assets/` appears in `ATTRIBUTIONS.md` and vice versa
-
 ## Phase 2 — Core Scene Architecture
 
 - [ ] Implement `PreloadScene` with progress bar loading all Phase 1 assets
