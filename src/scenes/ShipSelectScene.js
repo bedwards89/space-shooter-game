@@ -86,9 +86,19 @@ export default class ShipSelectScene extends Phaser.Scene {
   }
 
   _move(dir) {
-    this._sel = Phaser.Math.Wrap(this._sel + dir, 0, SHIPS.length);
-    this.sound.play('sfx_menuSelect', { volume: this._getSfxVol() });
-    this._renderSelection();
+    // Walk in the requested direction, skipping locked ships.
+    let next = Phaser.Math.Wrap(this._sel + dir, 0, SHIPS.length);
+    let steps = 0;
+    while (this._cards[next].locked && steps < SHIPS.length) {
+      next = Phaser.Math.Wrap(next + dir, 0, SHIPS.length);
+      steps++;
+    }
+    // Only move if we actually landed on an unlocked ship.
+    if (!this._cards[next].locked && next !== this._sel) {
+      this._sel = next;
+      this.sound.play('sfx_menuSelect', { volume: this._getSfxVol() });
+      this._renderSelection();
+    }
   }
 
   _confirm() {
