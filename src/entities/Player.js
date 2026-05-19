@@ -23,13 +23,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this._alive = true;
     this._lastFireTime = 0;
 
-    this.setScale(2);
+    this.setScale(1).setAngle(-90);
 
-    // Hitbox smaller than visual — standard shmup convention.
-    // frame.realWidth/Height give unscaled texture dimensions.
+    // Hitbox: use unscaled frame dims (body size in Phaser 3 is pre-scale).
+    // After -90° rotation the frame's height becomes the horizontal axis, so swap.
     const fw = this.frame.realWidth;
     const fh = this.frame.realHeight;
-    this.body.setSize(fw * ship.hitboxScale, fh * ship.hitboxScale);
+    this.body.setSize(fh * ship.hitboxScale, fw * ship.hitboxScale);
 
     this.setCollideWorldBounds(true);
   }
@@ -91,8 +91,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if (!InputManager.isFire()) return;
     if (time - this._lastFireTime < this._ship.fireRate) return;
     this._lastFireTime = time;
-    // GameScene listens here and pulls a bullet from the pool.
-    this.emit('fire', this.x + this.displayWidth / 2, this.y);
+    // After -90° rotation the "nose" is at x + half of the original frame height.
+    this.emit('fire', this.x + (this.frame.realHeight * this.scaleX) / 2, this.y);
   }
 
   _startInvuln() {
