@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { GAME_WIDTH } from '../config.js';
 
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y) {
-    super(scene, x, y, 'sheet', 'laserBlue01.png');
+  constructor(scene, x, y, frame = 'laserBlue01.png') {
+    super(scene, x, y, 'sheet', frame);
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setAngle(-90); // atlas sprite is vertical; rotate to face right

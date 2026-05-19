@@ -28,3 +28,11 @@ export const POWERUP = {
   rapidFireRate: 83, // ms (~12 shots/sec)
   onScreenLifetime: 9000,
 };
+
+export const ENEMY = {
+  bulletSpeed: 200,
+  turretStopX: GAME_WIDTH * 0.72,
+  bossStopX:   GAME_WIDTH * 0.75,
+  bossOscillateAmplitude: 50,
+  bossOscillateSpeed: 0.8, // radians/sec
+};

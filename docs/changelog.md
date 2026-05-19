@@ -4,6 +4,18 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ---
 
+## 2026-05-20
+
+### Phase 4 — Enemies & Levels
+
+- Reconciled data files: `enemies.js` now maps each archetype to real atlas frame names with `scale` and `hitboxScale`; `levels.js` replaces phantom background/boss-sprite keys with preloaded assets; `config.js` gains `ENEMY` constants (bullet speed, stop positions, boss oscillation).
+- Implemented `Enemy` entity: pool-friendly (`reset(typeId, overrides)`), four movement strategies (straight, sine, turret, boss oscillate), hit-flash tween with active guard, fires via `emit('fire')` for GameScene to pool-dispatch.
+- `Bullet` updated to accept optional `frame` param — enemy bullets reuse the same class with `laserRed01.png`.
+- Created `SpawnSystem`: pure (no Phaser), advances a sorted timeline by elapsed ms, returns entries due each tick, exposes `isDone`. Formation helpers (`getSpawnPositions`) return Y arrays for line, V, random, and single layouts.
+- Overhauled `GameScene`: three separate object pools (player bullets ×20, enemy bullets ×16, enemies by type); arcade-physics overlaps for all collision pairs; `SpawnSystem` driven by frame delta; level-complete detection (spawner done + no active enemies); "LEVEL COMPLETE" banner → `scene.restart()` for levels 1–2; win path to `GameOver(won:true)` after Level 3; ship-unlock persistence on level clear.
+- `PreloadScene` seeds `currentLevel: 1` in registry; `MenuScene._startGame` resets it to 1; `GameOverScene` retry resets to 1.
+- Added 57 unit tests across `SpawnSystem.test.js` (timing, single-fire, isDone, reset, formations) and `dataValidators.test.js` (levels.js shape, background keys, timeline sort, enemies.js fields). Total: 71 tests, all passing.
+
 ## 2026-05-19
 
 ### Phase 3 — Player & Combat

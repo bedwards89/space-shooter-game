@@ -53,6 +53,7 @@ export default class PreloadScene extends Phaser.Scene {
     const save = SaveSystem.load();
     this.registry.set('save', save);
     this.registry.set('selectedShip', save.unlockedShips[0] ?? 'Comet');
+    this.registry.set('currentLevel', 1);
 
     this.scene.start('Menu');
   }

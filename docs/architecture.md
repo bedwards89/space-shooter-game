@@ -49,7 +49,7 @@ All runtime-spawned objects use Phaser `Group` with `createMultiple()`. Objects 
 
 ## Key Design Decisions
 
-- **480×270 internal resolution** — scales cleanly to 1920×1080 (×4) and 1280×720 (×2.67). `pixelArt: true` prevents blurring.
+- **480×270 internal resolution** — scales cleanly to 1920×1080 (×4) and 1280×720 (×2.67). `pixelArt: false` so Phaser applies bilinear filtering; UI text and sprites render without blocky edges at non-integer scale factors.
 - **HUDScene runs parallel to GameScene** — avoids polluting GameScene with UI code. Communicates via Phaser scene events.
 - **Flat JS, no TypeScript** — lower handoff friction. Revisit after v1.
 - **`localStorage` for persistence** — no backend, no auth, sufficient for top-5 scores + unlocks.

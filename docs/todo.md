@@ -6,14 +6,7 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 ## Phase 4 — Enemies & Levels
 
-- [ ] Implement Enemy base class with pool-friendly `reset()`
-- [ ] Implement 4 enemy archetypes: SMALL, MEDIUM, LARGE, TURRET
-- [ ] Implement boss class (one per level)
-- [ ] Implement wave spawn system reading from `data/levels.js`
-- [ ] Implement collision: player bullet → enemy, enemy/bullet → player, player → power-up hook
-- [ ] Implement level transitions + "Level Complete" interstitial
-- [ ] Implement "You Win" flow after Level 3
-- [ ] Playtest each level start-to-finish
+- [ ] Playtest each level start-to-finish (manual)
 
 ## Phase 5 — Power-Ups
 

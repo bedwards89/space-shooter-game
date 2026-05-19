@@ -108,6 +108,7 @@ export default class GameOverScene extends Phaser.Scene {
 
   _confirm() {
     if (this._sel === 0) {
+      this.registry.set('currentLevel', 1); // retry always starts from Level 1
       this.scene.start('Game');
     } else {
       this.scene.start('Menu');

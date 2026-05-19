@@ -112,6 +112,7 @@ export default class MenuScene extends Phaser.Scene {
   _startGame() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
     this._music?.destroy(); this._music = null;
+    this.registry.set('currentLevel', 1);
     this.cameras.main.fade(300, 0, 0, 0, false, (cam, progress) => {
       if (progress === 1) this.scene.start('Game');
     });

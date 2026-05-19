@@ -26,7 +26,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.setScale(1).setAngle(90);
 
     // Hitbox: use unscaled frame dims (body size in Phaser 3 is pre-scale).
-    // After -90° rotation the frame's height becomes the horizontal axis, so swap.
+    // After +90° rotation (nose→right) frame height becomes the horizontal axis, so swap.
     const fw = this.frame.realWidth;
     const fh = this.frame.realHeight;
     this.body.setSize(fh * ship.hitboxScale, fw * ship.hitboxScale);
