@@ -4,6 +4,21 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ---
 
+## 2026-05-22
+
+### Bug Fix — Retry freeze
+
+- `HUDScene`: registry listeners (`changedata-score/lives/combo/powerupShield`) were attached to `this.registry.events` (game-level emitter) and survived `scene.stop()`. On retry, stale listeners fired into a stopped scene during `GameScene.create()`, breaking scene initialisation before `InputManager.init()` could run. Fixed by storing callback refs and removing them via `this.events.once('shutdown', ...)`.
+- `GameOverScene`: added `_confirmed` guard to prevent double `scene.start()` if SPACE and ENTER fire in the same frame.
+
+### Phase 6 — Score System
+
+- `ScoreSystem.recordKill(now)`: fixed combo window gap — resets streak to 0 before incrementing if `_multiplier === 1 && gap > comboWindow`, so kills spread across multiple windows can't accumulate into a multiplier.
+- `GameScene`: imports and calls `ScoreSystem.reset()` in `create()`; `_onBulletHitEnemy` calls `ScoreSystem.recordKill()` + `ScoreSystem.add()` and pushes updated score + multiplier to registry; `_onPlayerCollectPowerup` routes power-up points through `ScoreSystem.add()` (benefits from active multiplier); `update()` calls `ScoreSystem.decayCheck(time)` each frame and pushes multiplier to registry when it changes.
+- `HUDScene`: combo text changed from yellow "x2 COMBO" to orange "x2 MULTI"; only shown when multiplier is active (registry `combo > 1`).
+- `GameOverScene`: "NEW HIGH SCORE!" check now captures `prevTop` before saving so tied scores don't falsely trigger the banner; added a continuous scale-pulse tween (×1.2, 350 ms, sine ease) on the banner text.
+- 7 new ScoreSystem tests (window reset, streak breakage, mid-multiplier kill, decay guards). Total: 84 tests passing.
+
 ## 2026-05-21
 
 ### Phase 5 — Power-Ups

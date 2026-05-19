@@ -39,11 +39,21 @@ export default class GameOverScene extends Phaser.Scene {
     // Score
     this.add.text(CX, 85, `SCORE  ${this._finalScore}`, STYLE_SCORE).setOrigin(0.5);
 
-    // High score handling
+    // Capture previous top before saving so the comparison is meaningful
+    const prevTop = (this.registry.get('save') ?? SaveSystem.load()).highScores[0]?.score ?? 0;
     const save = this._saveScore();
-    const isNewHigh = save.highScores[0]?.score === this._finalScore && this._finalScore > 0;
+    const isNewHigh = this._finalScore > 0 && this._finalScore > prevTop;
     if (isNewHigh) {
-      this.add.text(CX, 100, 'NEW HIGH SCORE!', STYLE_HI).setOrigin(0.5);
+      const hiText = this.add.text(CX, 100, 'NEW HIGH SCORE!', STYLE_HI).setOrigin(0.5);
+      this.tweens.add({
+        targets:  hiText,
+        scaleX:   1.2,
+        scaleY:   1.2,
+        duration: 350,
+        yoyo:     true,
+        repeat:   -1,
+        ease:     'Sine.easeInOut',
+      });
     }
 
     // Top 5 leaderboard

@@ -32,8 +32,8 @@ export default class HUDScene extends Phaser.Scene {
     // Score
     this._scoreTxt = this.add.text(6, 6, 'SCORE  0', STYLE);
 
-    // Combo (hidden until active)
-    this._comboTxt = this.add.text(6, 18, '', { ...STYLE, color: '#ffdd00' }).setVisible(false);
+    // Combo multiplier (hidden until ×2 activates)
+    this._comboTxt = this.add.text(6, 18, '', { ...STYLE, color: '#ff8800' }).setVisible(false);
 
     // Life icons
     this._lifeIcons = [];
@@ -51,7 +51,7 @@ export default class HUDScene extends Phaser.Scene {
     this._onLives  = (_p, lives)  => { this._lives = lives; this._buildLives(); };
     this._onCombo  = (_p, combo)  => {
       if (combo > 1) {
-        this._comboTxt.setText(`x${combo} COMBO`).setVisible(true);
+        this._comboTxt.setText(`x${combo} MULTI`).setVisible(true);
       } else {
         this._comboTxt.setVisible(false);
       }

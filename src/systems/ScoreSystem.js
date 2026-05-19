@@ -25,6 +25,11 @@ export const ScoreSystem = {
   },
 
   recordKill(now = Date.now()) {
+    // Reset streak if the gap since last kill exceeded the combo window
+    // (only while multiplier is not yet active — active multiplier decays via decayCheck).
+    if (this._multiplier === 1 && now - this._lastKillTime > SCORE.comboWindow) {
+      this._combo = 0;
+    }
     this._combo++;
     this._lastKillTime = now;
     if (this._combo >= SCORE.comboKillCount) {

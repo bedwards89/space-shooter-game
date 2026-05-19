@@ -12,14 +12,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 - [ ] Playtest power-up drops, stacking, and HUD bars (manual)
 
-## Phase 6 — Score System
-
-- [ ] Implement `ScoreSystem.add()`, `recordKill()`, `decayCheck()`
-- [ ] Wire combo multiplier to kill detection in GameScene
-- [ ] HUD: live score, combo count, multiplier display
-- [ ] GameOverScene: "NEW HIGH SCORE!" flourish when applicable
-- [ ] Write unit tests for ScoreSystem
-
 ## Phase 7 — Save System
 
 - [ ] Implement `SaveSystem.load()` / `save()` / `reset()` / `migrate()`

@@ -3,6 +3,7 @@ import { GAME_WIDTH, GAME_HEIGHT, PLAYER, ENEMY, SCORE } from '../config.js';
 import { LEVELS } from '../data/levels.js';
 import { POWERUP_TYPE_IDS } from '../data/powerups.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
+import { ScoreSystem } from '../systems/ScoreSystem.js';
 import { InputManager } from '../systems/InputManager.js';
 import { SpawnSystem, getSpawnPositions } from '../systems/SpawnSystem.js';
 import Player  from '../entities/Player.js';
@@ -44,6 +45,9 @@ export default class GameScene extends Phaser.Scene {
     this._guaranteedDropDone = false;
     this._levelComplete      = false;
     this._dead               = false;
+    this._lastMultiplier     = 1;
+
+    ScoreSystem.reset();
 
     this.registry.set('score',            0);
     this.registry.set('lives',            PLAYER.lives);
@@ -74,6 +78,13 @@ export default class GameScene extends Phaser.Scene {
 
     if (this._spawner.isDone && !this._allEnemies.some((e) => e.active)) {
       this._onLevelComplete();
+    }
+
+    ScoreSystem.decayCheck(time);
+    const mult = ScoreSystem.getMultiplier();
+    if (mult !== this._lastMultiplier) {
+      this._lastMultiplier = mult;
+      this.registry.set('combo', mult);
     }
 
     if (InputManager.isPauseJustDown()) this._openPause();
@@ -214,8 +225,13 @@ export default class GameScene extends Phaser.Scene {
     bullet.disableBody(true, true);
     const killed = enemy.hit(1);
     if (killed) {
-      const score = (this.registry.get('score') ?? 0) + enemy._type.scoreValue;
-      this.registry.set('score', score);
+      ScoreSystem.recordKill(this.time.now);
+      this.registry.set('score', ScoreSystem.add(enemy._type.scoreValue, this.time.now));
+      const mult = ScoreSystem.getMultiplier();
+      if (mult !== this._lastMultiplier) {
+        this._lastMultiplier = mult;
+        this.registry.set('combo', mult);
+      }
       this.sound.play('sfx_explosion', { volume: this._getSfxVol() * 0.7 });
       this.cameras.main.shake(60, 0.005);
       this._tryDropPowerup(enemy.x, enemy.y, enemy._type.dropChance);
@@ -239,7 +255,7 @@ export default class GameScene extends Phaser.Scene {
     if (!typeId) return;
     player.applyPowerup(typeId);
     this.sound.play('sfx_powerupPickup', { volume: this._getSfxVol() });
-    this.registry.set('score', (this.registry.get('score') ?? 0) + SCORE.powerUpPickup);
+    this.registry.set('score', ScoreSystem.add(SCORE.powerUpPickup, this.time.now));
   }
 
   // ------------------------------------------------------------------ //
