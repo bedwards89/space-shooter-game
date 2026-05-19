@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
+import { version } from '../../package.json';
 
 const CX = GAME_WIDTH / 2;
 const STYLE = {
@@ -49,7 +50,7 @@ export default class MenuScene extends Phaser.Scene {
     ).setOrigin(0.5).setVisible(false);
 
     // Version / build stamp
-    this.add.text(GAME_WIDTH - 4, GAME_HEIGHT - 4, 'v0.1', {
+    this.add.text(GAME_WIDTH - 4, GAME_HEIGHT - 4, `v${version}`, {
       fontFamily: '"Kenney Future", monospace',
       fontSize: '8px',
       color: '#444444',
