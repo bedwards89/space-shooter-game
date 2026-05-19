@@ -4,15 +4,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 ---
 
-## Phase 3 — Player & Combat
-
-- [ ] Implement Player entity: arcade physics, movement (arrows + WASD), bounds clamping
-- [ ] Implement primary fire with bullet pool (Space + J)
-- [ ] Normalize diagonal movement (no speed boost on diagonals)
-- [ ] Implement 3 lives, death animation, 2s i-frames on respawn
-- [ ] Per-ship stats consumed from `data/ships.js`
-- [ ] Tuning pass: movement and fire rate feel good
-
 ## Phase 4 — Enemies & Levels
 
 - [ ] Implement Enemy base class with pool-friendly `reset()`

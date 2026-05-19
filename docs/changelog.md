@@ -6,6 +6,16 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ## 2026-05-19
 
+### Phase 3 — Player & Combat
+
+- Implemented `Bullet` entity: pool-friendly arcade sprite, rotated -90° (vertical atlas frame → horizontal beam), auto-deactivates off-screen via `disableBody`.
+- Implemented `Player` entity: arcade physics, scale ×2, hitbox set to `hitboxScale` fraction of the frame (per ship data), world-bounds clamping. Diagonal movement normalised to `Math.SQRT1_2`.
+- Fire: event-driven (`'fire'` → GameScene pulls from pool); rate limited by `ship.fireRate`; plays `sfx_shoot`.
+- Lives: 3 per run; hit() triggers 2 s of i-frames (alpha flicker tween); death emits `'died'`.
+- GameScene refactored: physics world bounds set; 20-bullet pre-created pool (zero runtime allocations); registry drives HUD (score/lives/combo); death → 1.2 s delay → GameOverScene.
+- InputManager wired as singleton; Pause now uses `InputManager.isPauseJustDown()`.
+- Per-ship speed and fire rate visible immediately on ship switch.
+
 ### Phase 2 — Core Scene Architecture
 
 - Implemented full scene graph: Boot → Preload → Menu → (ShipSelect | Credits | Game → Pause → GameOver).
