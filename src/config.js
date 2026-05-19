@@ -25,8 +25,9 @@ export const SCORE = {
 export const POWERUP = {
   spreadDuration: 10000,
   rapidDuration: 8000,
-  rapidFireRate: 83, // ms (~12 shots/sec)
+  rapidFireRate: 83,        // ms (~12 shots/sec)
   onScreenLifetime: 9000,
+  driftSpeed: 40,           // px/s leftward, matches background scroll feel
 };
 
 export const ENEMY = {

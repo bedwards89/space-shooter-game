@@ -18,6 +18,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     this._typeId = typeId;
     this.setTexture('sheet', POWERUP_TYPES[typeId].frame);
     this.enableBody(true, x, y, true, true);
+    this.setVelocityX(-POWERUP.driftSpeed);
 
     // Auto-despawn if the player doesn't collect it in time.
     this._expireEvent = this.scene.time.delayedCall(
