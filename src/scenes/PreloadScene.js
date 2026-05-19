@@ -17,9 +17,9 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.on('progress', (v) => this._bar.scaleX = v);
 
-    // Sprite atlases
-    this.load.atlas('sheet',  'assets/sprites/sheet.png',  'assets/sprites/sheet.xml');
-    this.load.atlas('sheet2', 'assets/sprites/sheet2.png', 'assets/sprites/sheet2.xml');
+    // Sprite atlases — Kenney uses Starling XML format, not JSON.
+    this.load.atlasXML('sheet',  'assets/sprites/sheet.png',  'assets/sprites/sheet.xml');
+    this.load.atlasXML('sheet2', 'assets/sprites/sheet2.png', 'assets/sprites/sheet2.xml');
 
     // Backgrounds (individual PNGs, used as TileSprite textures)
     this.load.image('bg_black',      'assets/sprites/bg_black.png');
