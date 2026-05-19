@@ -105,7 +105,8 @@ export default class HUDScene extends Phaser.Scene {
     const shipId = this.registry.get('selectedShip') ?? 'Comet';
     const frame  = LIFE_FRAMES[shipId] ?? 'playerLife1_blue.png';
     for (let i = 0; i < this._lives; i++) {
-      const icon = this.add.image(GAME_WIDTH - 10 - i * 20, 8, 'sheet', frame).setScale(1);
+      const icon = this.add.image(GAME_WIDTH - 20 - i * 22, 4, 'sheet', frame)
+        .setScale(1).setOrigin(0.5, 0);
       this._lifeIcons.push(icon);
     }
   }
