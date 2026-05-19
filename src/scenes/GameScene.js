@@ -191,7 +191,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   _fireEnemyBullet(x, y, isBoss) {
-    const angles = isBoss ? [-15, 0, 15] : [0];
+    const angles = isBoss ? ENEMY.bossBulletAngles : [0];
     angles.forEach((deg) => {
       const b = this._enemyBullets.find((b) => !b.active);
       if (!b) return;

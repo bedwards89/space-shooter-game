@@ -34,5 +34,6 @@ export const ENEMY = {
   turretStopX: GAME_WIDTH * 0.72,
   bossStopX:   GAME_WIDTH * 0.75,
   bossOscillateAmplitude: 50,
-  bossOscillateSpeed: 0.8, // radians/sec
+  bossOscillateSpeed: 0.8,        // radians/sec
+  bossBulletAngles: [-8, 0, 8],   // degrees; tighter than ±15° so shots are dodgeable on a 270px screen
 };

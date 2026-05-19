@@ -25,7 +25,7 @@ export const SHIPS = [
     spriteKey: 'ship_bulwark',
     speed: 100,
     fireRate: 120,
-    hitboxScale: 0.65,
+    hitboxScale: 0.55,
     startsWithShield: true,
     unlockCriteria: { levelCleared: 3 },
     description: 'Slow, large hitbox, high fire rate. Starts each level with a free Shield. Unlock: clear Level 3.',
