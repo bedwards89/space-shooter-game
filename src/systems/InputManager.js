@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 // Phase 3: wraps Phaser cursors + WASD so game logic never reads keys directly.
 export const InputManager = {
   _cursors: null,
