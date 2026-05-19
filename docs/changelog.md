@@ -6,6 +6,19 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ## 2026-05-19
 
+### Phase 2 — Core Scene Architecture
+
+- Implemented full scene graph: Boot → Preload → Menu → (ShipSelect | Credits | Game → Pause → GameOver).
+- PreloadScene: loads all atlases, backgrounds, SFX, music, and fonts with a progress bar. Seeds game registry with save data on complete.
+- MenuScene: scrolling parallax background, keyboard navigation (↑↓ + Enter/Space), audio unlock on first keypress, Reset Save with confirmation flash.
+- ShipSelectScene: 3 ship cards with sprites (←→/AD to navigate); locked ships shown greyed out with unlock criteria; shake feedback on locked selection.
+- GameScene: 3-layer parallax scrolling background (20/45/90 px/s); static player ship for Phase 2; launches HUDScene in parallel; P/Esc opens PauseScene.
+- HUDScene: score text + life icons, wired to registry events (ready for Phase 3/6).
+- PauseScene: translucent overlay, Resume/Quit to Menu, P/Esc also resumes.
+- GameOverScene: win/lose title, final score, top-5 leaderboard, saves score to SaveSystem, Retry/Main Menu.
+- CreditsScene: full CC attribution list, ESC/Enter/Space returns to Menu.
+- Updated docs/todo.md and docs/changelog.md.
+
 ### Phase 1 — Asset Pipeline & Licensing
 
 - Downloaded Kenney Space Shooter Redux (CC0) — main sprite atlas `sheet.png/xml` plus 4 tileable backgrounds.

@@ -4,18 +4,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 ---
 
-## Phase 2 — Core Scene Architecture
-
-- [ ] Implement `PreloadScene` with progress bar loading all Phase 1 assets
-- [ ] Implement `MenuScene` with Start, Ship Select, Credits, Reset Save — keyboard navigable
-- [ ] Implement `ShipSelectScene` — show ships, lock criteria, allow selection
-- [ ] Implement `GameScene` — scrolling parallax background, player visible
-- [ ] Implement `HUDScene` — placeholder score and lives display
-- [ ] Implement `PauseScene` — dim overlay, Resume / Quit to Menu
-- [ ] Implement `GameOverScene` — score, Retry, Main Menu
-- [ ] Implement `CreditsScene` — CC-BY attributions
-- [ ] Wire all scene transitions; verify keyboard navigation throughout
-
 ## Phase 3 — Player & Combat
 
 - [ ] Implement Player entity: arcade physics, movement (arrows + WASD), bounds clamping
