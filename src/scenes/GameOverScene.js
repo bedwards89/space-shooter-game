@@ -25,7 +25,8 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   create() {
-    this._sel = 0;
+    this._sel       = 0;
+    this._confirmed = false;
 
     // Background
     this.add.rectangle(CX, CY, GAME_WIDTH, GAME_HEIGHT, 0x000011);
@@ -107,8 +108,10 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   _confirm() {
+    if (this._confirmed) return;
+    this._confirmed = true;
     if (this._sel === 0) {
-      this.registry.set('currentLevel', 1); // retry always starts from Level 1
+      this.registry.set('currentLevel', 1);
       this.scene.start('Game');
     } else {
       this.scene.start('Menu');

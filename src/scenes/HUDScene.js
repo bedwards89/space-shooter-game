@@ -46,23 +46,28 @@ export default class HUDScene extends Phaser.Scene {
       ...STYLE_TINY, color: '#88ccff',
     }).setOrigin(0, 0).setVisible(false);
 
-    // Registry listeners
-    this.registry.events.on('changedata-score', (_p, score) => {
-      this._scoreTxt.setText(`SCORE  ${score}`);
-    });
-    this.registry.events.on('changedata-lives', (_p, lives) => {
-      this._lives = lives;
-      this._buildLives();
-    });
-    this.registry.events.on('changedata-combo', (_p, combo) => {
+    // Registry listeners — stored so they can be removed on shutdown.
+    this._onScore  = (_p, score)  => { this._scoreTxt.setText(`SCORE  ${score}`); };
+    this._onLives  = (_p, lives)  => { this._lives = lives; this._buildLives(); };
+    this._onCombo  = (_p, combo)  => {
       if (combo > 1) {
         this._comboTxt.setText(`x${combo} COMBO`).setVisible(true);
       } else {
         this._comboTxt.setVisible(false);
       }
-    });
-    this.registry.events.on('changedata-powerupShield', (_p, active) => {
-      this._shieldText.setVisible(active);
+    };
+    this._onShield = (_p, active) => { this._shieldText.setVisible(active); };
+
+    this.registry.events.on('changedata-score',        this._onScore);
+    this.registry.events.on('changedata-lives',        this._onLives);
+    this.registry.events.on('changedata-combo',        this._onCombo);
+    this.registry.events.on('changedata-powerupShield', this._onShield);
+
+    this.events.once('shutdown', () => {
+      this.registry.events.off('changedata-score',        this._onScore);
+      this.registry.events.off('changedata-lives',        this._onLives);
+      this.registry.events.off('changedata-combo',        this._onCombo);
+      this.registry.events.off('changedata-powerupShield', this._onShield);
     });
   }
 
