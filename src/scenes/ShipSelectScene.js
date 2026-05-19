@@ -43,7 +43,7 @@ export default class ShipSelectScene extends Phaser.Scene {
       const locked = !this._unlocked.includes(ship.id);
 
       const sprite = this.add.image(x, 100, 'sheet', SHIP_FRAMES[ship.id])
-        .setScale(1).setAngle(90)
+        .setScale(ship.scale * 2).setAngle(90)
         .setAlpha(locked ? 0.25 : 1);
 
       const nameText = this.add.text(x, 140, ship.label, locked ? STYLE_LOCKED : STYLE)

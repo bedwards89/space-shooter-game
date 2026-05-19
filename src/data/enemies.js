@@ -1,5 +1,5 @@
 // All frames live in the 'sheet' atlas (Kenney Space Shooter Redux).
-// hitboxScale: fraction of the rotated visual size used as the physics body.
+// hitboxScale: 1.0 for all types — hitbox covers the full scaled sprite frame.
 // scale: Phaser sprite scale applied at runtime.
 
 export const ENEMY_TYPES = {
@@ -13,7 +13,7 @@ export const ENEMY_TYPES = {
     movement: 'straight',
     fireRate: null,
     dropChance: 0.05,
-    hitboxScale: 0.7,
+    hitboxScale: 1.0,
   },
   MEDIUM: {
     id: 'MEDIUM',
@@ -25,7 +25,7 @@ export const ENEMY_TYPES = {
     movement: 'sine',
     fireRate: 2000,
     dropChance: 0.10,
-    hitboxScale: 0.6,
+    hitboxScale: 1.0,
   },
   LARGE: {
     id: 'LARGE',
@@ -37,7 +37,7 @@ export const ENEMY_TYPES = {
     movement: 'straight',
     fireRate: 1200,
     dropChance: 0.10,
-    hitboxScale: 0.6,
+    hitboxScale: 1.0,
   },
   TURRET: {
     id: 'TURRET',
@@ -49,7 +49,7 @@ export const ENEMY_TYPES = {
     movement: 'turret',
     fireRate: 1500,
     dropChance: 0.08,
-    hitboxScale: 0.6,
+    hitboxScale: 1.0,
   },
   BOSS: {
     id: 'BOSS',
@@ -61,6 +61,6 @@ export const ENEMY_TYPES = {
     movement: 'boss',
     fireRate: 1800,
     dropChance: 0,
-    hitboxScale: 0.5,
+    hitboxScale: 1.0,
   },
 };
