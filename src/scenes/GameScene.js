@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, PLAYER, ENEMY, SCORE } from '../config.js';
+import { GAME_WIDTH, GAME_HEIGHT, PLAYER, ENEMY, SCORE, BG_SPEEDS } from '../config.js';
 import { LEVELS } from '../data/levels.js';
 import { POWERUP_TYPE_IDS } from '../data/powerups.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
@@ -18,8 +18,6 @@ const PLAYER_BULLET_COUNT = 48; // enough for rapid + spread (3 bullets per 83 m
 const ENEMY_BULLET_COUNT  = 16;
 const POWERUP_POOL_SIZE   = 6;
 const POOL_SIZES = { SMALL: 15, MEDIUM: 8, LARGE: 5, TURRET: 4, BOSS: 1 };
-
-const BG_SPEEDS = [20, 45, 90];
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -137,7 +135,7 @@ export default class GameScene extends Phaser.Scene {
 
   _setupPlayer() {
     const shipId = this.registry.get('selectedShip') ?? 'Comet';
-    this._player = new Player(this, 80, CY, shipId);
+    this._player = new Player(this, 200, CY, shipId);
 
     this._player.on('fire',         (x, y, ang) => this._firePlayerBullet(x, y, ang));
     this._player.on('shoot',        ()           => this.sound.play('sfx_shoot', { volume: this._getSfxVol() * 0.6 }));
@@ -178,7 +176,7 @@ export default class GameScene extends Phaser.Scene {
       const overrides = type === 'BOSS'
         ? { hp: this._levelData.boss.hp, scoreValue: this._levelData.boss.scoreValue }
         : {};
-      const xOffset = formation === 'v' ? i * 24 : 0;
+      const xOffset = formation === 'v' ? i * 64 : 0;
       enemy.reset(GAME_WIDTH + 32 + xOffset, y, type, overrides);
     });
   }
@@ -302,7 +300,7 @@ export default class GameScene extends Phaser.Scene {
     } else {
       const banner = this.add.text(CX, CY, 'LEVEL COMPLETE', {
         fontFamily: '"Kenney Future", monospace',
-        fontSize: '20px',
+        fontSize: '52px',
         color: '#44ff44',
       }).setOrigin(0.5).setDepth(10);
 

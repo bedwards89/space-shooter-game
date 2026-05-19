@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, PLAYER, POWERUP } from '../config.js';
+import { GAME_WIDTH, GAME_HEIGHT, PLAYER, POWERUP } from '../config.js';
 
-const STYLE      = { fontFamily: '"Kenney Future", monospace', fontSize: '10px', color: '#ffffff' };
-const STYLE_TINY = { fontFamily: '"Kenney Future", monospace', fontSize: '7px',  color: '#aaaaaa' };
+const STYLE      = { fontFamily: '"Kenney Future", monospace', fontSize: '20px', color: '#ffffff' };
+const STYLE_TINY = { fontFamily: '"Kenney Future", monospace', fontSize: '14px', color: '#aaaaaa' };
 
 const LIFE_FRAMES = {
   Comet:   'playerLife1_blue.png',
@@ -11,13 +11,13 @@ const LIFE_FRAMES = {
 };
 
 // Power-up bar layout constants
-const BAR_X      = 6;   // left edge of label
-const BAR_LBL_W  = 22;  // pixels reserved for the 3-char label
-const BAR_W      = 50;  // width of the fill area
-const BAR_H      = 4;
-const BAR_Y_SPR  = 252;
-const BAR_Y_RPD  = 260;
-const SHD_Y      = 260;
+const BAR_X      = 16;   // left edge of label
+const BAR_LBL_W  = 52;   // pixels reserved for the 3-char label
+const BAR_W      = 140;  // width of the fill area
+const BAR_H      = 10;
+const BAR_Y_SPR  = GAME_HEIGHT - 38;
+const BAR_Y_RPD  = GAME_HEIGHT - 20;
+const SHD_Y      = GAME_HEIGHT - 38;
 
 export default class HUDScene extends Phaser.Scene {
   constructor() {
@@ -30,10 +30,10 @@ export default class HUDScene extends Phaser.Scene {
     this._combo = 1;
 
     // Score
-    this._scoreTxt = this.add.text(6, 6, 'SCORE  0', STYLE);
+    this._scoreTxt = this.add.text(16, 14, 'SCORE  0', STYLE);
 
     // Combo multiplier (hidden until ×2 activates)
-    this._comboTxt = this.add.text(6, 18, '', { ...STYLE, color: '#ff8800' }).setVisible(false);
+    this._comboTxt = this.add.text(16, 42, '', { ...STYLE, color: '#ff8800' }).setVisible(false);
 
     // Life icons
     this._lifeIcons = [];
@@ -42,9 +42,9 @@ export default class HUDScene extends Phaser.Scene {
     // Power-up indicators
     this._spreadBar  = this._makePowerupBar(BAR_Y_SPR, 0x4488ff, 'SPR');
     this._rapidBar   = this._makePowerupBar(BAR_Y_RPD, 0x44cc44, 'RPD');
-    this._shieldText = this.add.text(GAME_WIDTH - 40, SHD_Y, 'SHIELD', {
+    this._shieldText = this.add.text(GAME_WIDTH - 16, SHD_Y, 'SHIELD', {
       ...STYLE_TINY, color: '#88ccff',
-    }).setOrigin(0, 0).setVisible(false);
+    }).setOrigin(1, 0.5).setVisible(false);
 
     // Registry listeners — stored so they can be removed on shutdown.
     this._onScore  = (_p, score)  => { this._scoreTxt.setText(`SCORE  ${score}`); };
@@ -105,8 +105,8 @@ export default class HUDScene extends Phaser.Scene {
     const shipId = this.registry.get('selectedShip') ?? 'Comet';
     const frame  = LIFE_FRAMES[shipId] ?? 'playerLife1_blue.png';
     for (let i = 0; i < this._lives; i++) {
-      const icon = this.add.image(GAME_WIDTH - 20 - i * 22, 4, 'sheet', frame)
-        .setScale(1).setOrigin(0.5, 0);
+      const icon = this.add.image(GAME_WIDTH - 50 - i * 80, 10, 'sheet', frame)
+        .setScale(2).setOrigin(0.5, 0);
       this._lifeIcons.push(icon);
     }
   }

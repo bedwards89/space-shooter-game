@@ -6,9 +6,9 @@ export const ENEMY_TYPES = {
   SMALL: {
     id: 'SMALL',
     frame: 'enemyBlack4.png',    // 82×84 — compact diamond
-    scale: 0.55,
+    scale: 1.1,
     hp: 1,
-    speed: 120,
+    speed: 300,
     scoreValue: 100,
     movement: 'straight',
     fireRate: null,
@@ -18,9 +18,9 @@ export const ENEMY_TYPES = {
   MEDIUM: {
     id: 'MEDIUM',
     frame: 'enemyBlue2.png',     // 104×84 — wide wedge
-    scale: 0.7,
+    scale: 1.4,
     hp: 3,
-    speed: 70,
+    speed: 175,
     scoreValue: 250,
     movement: 'sine',
     fireRate: 2000,
@@ -30,9 +30,9 @@ export const ENEMY_TYPES = {
   LARGE: {
     id: 'LARGE',
     frame: 'enemyRed1.png',      // 93×84 — saucer
-    scale: 0.9,
+    scale: 1.8,
     hp: 8,
-    speed: 40,
+    speed: 100,
     scoreValue: 500,
     movement: 'straight',
     fireRate: 1200,
@@ -42,9 +42,9 @@ export const ENEMY_TYPES = {
   TURRET: {
     id: 'TURRET',
     frame: 'enemyGreen3.png',    // 103×84 — solid wedge
-    scale: 0.7,
+    scale: 1.4,
     hp: 5,
-    speed: 50,
+    speed: 125,
     scoreValue: 300,
     movement: 'turret',
     fireRate: 1500,
@@ -54,9 +54,9 @@ export const ENEMY_TYPES = {
   BOSS: {
     id: 'BOSS',
     frame: 'enemyRed5.png',      // 97×84 — imposing ship, scaled up
-    scale: 1.5,
+    scale: 3.0,
     hp: 40,                      // overridden per level via boss.hp
-    speed: 30,
+    speed: 75,
     scoreValue: 5000,            // overridden per level via boss.scoreValue
     movement: 'boss',
     fireRate: 1800,

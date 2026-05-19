@@ -3,10 +3,10 @@ import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 import { SHIPS } from '../data/ships.js';
 
 const CX = GAME_WIDTH / 2;
-const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '10px', color: '#ffffff' };
+const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '20px', color: '#ffffff' };
 const STYLE_LOCKED = { ...STYLE, color: '#555555' };
 const STYLE_SELECTED = { ...STYLE, color: '#ffdd00' };
-const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '18px', color: '#ffffff' };
+const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '40px', color: '#ffffff' };
 
 // Which atlas frame to show for each ship
 const SHIP_FRAMES = {
@@ -28,8 +28,8 @@ export default class ShipSelectScene extends Phaser.Scene {
     // Background
     this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_black');
 
-    this.add.text(CX, 18, 'SELECT SHIP', STYLE_TITLE).setOrigin(0.5);
-    this.add.text(CX, GAME_HEIGHT - 10, 'ESC — Back', STYLE).setOrigin(0.5);
+    this.add.text(CX, 50, 'SELECT SHIP', STYLE_TITLE).setOrigin(0.5);
+    this.add.text(CX, GAME_HEIGHT - 20, 'ESC — Back', STYLE).setOrigin(0.5);
 
     this._buildCards();
     this._renderSelection();
@@ -42,22 +42,22 @@ export default class ShipSelectScene extends Phaser.Scene {
       const x = colW * i + colW / 2;
       const locked = !this._unlocked.includes(ship.id);
 
-      const sprite = this.add.image(x, 100, 'sheet', SHIP_FRAMES[ship.id])
+      const sprite = this.add.image(x, 280, 'sheet', SHIP_FRAMES[ship.id])
         .setScale(ship.scale * 2).setAngle(90)
         .setAlpha(locked ? 0.25 : 1);
 
-      const nameText = this.add.text(x, 140, ship.label, locked ? STYLE_LOCKED : STYLE)
+      const nameText = this.add.text(x, 420, ship.label, locked ? STYLE_LOCKED : STYLE)
         .setOrigin(0.5);
 
       const desc = locked
         ? `Unlock: clear Level ${ship.unlockCriteria?.levelCleared}`
         : ship.description;
 
-      const descText = this.add.text(x, 152, desc, {
+      const descText = this.add.text(x, 452, desc, {
         fontFamily: '"Kenney Future", monospace',
-        fontSize: '7px',
+        fontSize: '14px',
         color: locked ? '#444444' : '#aaaaaa',
-        wordWrap: { width: colW - 8 },
+        wordWrap: { width: colW - 16 },
         align: 'center',
       }).setOrigin(0.5, 0);
 

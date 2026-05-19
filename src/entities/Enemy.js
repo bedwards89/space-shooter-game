@@ -80,8 +80,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   _moveSine(dt) {
     this._sineOffset += dt * 2.5;
     this.x -= this._type.speed * dt;
-    this.y += Math.sin(this._sineOffset) * 60 * dt;
-    this.y = Phaser.Math.Clamp(this.y, 20, GAME_HEIGHT - 20);
+    this.y += Math.sin(this._sineOffset) * ENEMY.sineAmplitude * dt;
+    this.y = Phaser.Math.Clamp(this.y, 40, GAME_HEIGHT - 40);
   }
 
   _moveTurret(dt) {

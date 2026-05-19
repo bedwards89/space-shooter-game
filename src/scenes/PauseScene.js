@@ -3,9 +3,9 @@ import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 
 const CX = GAME_WIDTH / 2;
 const CY = GAME_HEIGHT / 2;
-const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '12px', color: '#ffffff' };
+const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '24px', color: '#ffffff' };
 const STYLE_SEL = { ...STYLE, color: '#ffdd00' };
-const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '22px', color: '#ffffff' };
+const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '48px', color: '#ffffff' };
 
 const ITEMS = ['Resume', 'Quit to Menu'];
 
@@ -20,10 +20,10 @@ export default class PauseScene extends Phaser.Scene {
     // Semi-transparent overlay
     this.add.rectangle(CX, CY, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.6);
 
-    this.add.text(CX, CY - 40, 'PAUSED', STYLE_TITLE).setOrigin(0.5);
+    this.add.text(CX, CY - 80, 'PAUSED', STYLE_TITLE).setOrigin(0.5);
 
     this._texts = ITEMS.map((label, i) =>
-      this.add.text(CX, CY - 8 + i * 22, label, STYLE).setOrigin(0.5)
+      this.add.text(CX, CY + 20 + i * 52, label, STYLE).setOrigin(0.5)
     );
 
     this._renderSelection();

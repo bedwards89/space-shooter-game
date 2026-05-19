@@ -6,13 +6,13 @@ import { version } from '../../package.json';
 const CX = GAME_WIDTH / 2;
 const STYLE = {
   fontFamily: '"Kenney Future", monospace',
-  fontSize: '14px',
+  fontSize: '24px',
   color: '#ffffff',
 };
 const STYLE_SELECTED = { ...STYLE, color: '#ffdd00' };
 const STYLE_TITLE = {
   fontFamily: '"Kenney Future", monospace',
-  fontSize: '32px',
+  fontSize: '64px',
   color: '#ffffff',
 };
 
@@ -31,28 +31,28 @@ export default class MenuScene extends Phaser.Scene {
     this._bg = this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_darkPurple');
 
     // Title
-    this.add.text(CX, 55, 'STARWAKE', STYLE_TITLE).setOrigin(0.5);
+    this.add.text(CX, 160, 'STARWAKE', STYLE_TITLE).setOrigin(0.5);
 
     // Menu items
-    const startY = 110;
-    const gap = 22;
+    const startY = 300;
+    const gap = 52;
     this._texts = ITEMS.map((label, i) =>
       this.add.text(CX, startY + i * gap, label, STYLE).setOrigin(0.5)
     );
 
     // Reset confirm prompt (hidden until triggered)
-    this._confirmText = this.add.text(CX, startY + 3 * gap + 18,
+    this._confirmText = this.add.text(CX, startY + 3 * gap + 36,
       'Are you sure? Press Enter again to confirm.', {
         fontFamily: '"Kenney Future", monospace',
-        fontSize: '8px',
+        fontSize: '14px',
         color: '#ff4444',
       }
     ).setOrigin(0.5).setVisible(false);
 
     // Version / build stamp
-    this.add.text(GAME_WIDTH - 4, GAME_HEIGHT - 4, `v${version}`, {
+    this.add.text(GAME_WIDTH - 8, GAME_HEIGHT - 8, `v${version}`, {
       fontFamily: '"Kenney Future", monospace',
-      fontSize: '8px',
+      fontSize: '12px',
       color: '#444444',
     }).setOrigin(1, 1);
 

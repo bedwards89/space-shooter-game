@@ -4,11 +4,11 @@ import { SaveSystem } from '../systems/SaveSystem.js';
 
 const CX = GAME_WIDTH / 2;
 const CY = GAME_HEIGHT / 2;
-const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '12px', color: '#ffffff' };
+const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '24px', color: '#ffffff' };
 const STYLE_SEL = { ...STYLE, color: '#ffdd00' };
-const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '24px', color: '#ff4444' };
-const STYLE_SCORE = { fontFamily: '"Kenney Future", monospace', fontSize: '14px', color: '#ffffff' };
-const STYLE_HI = { fontFamily: '"Kenney Future", monospace', fontSize: '11px', color: '#ffdd00' };
+const STYLE_TITLE = { fontFamily: '"Kenney Future", monospace', fontSize: '56px', color: '#ff4444' };
+const STYLE_SCORE = { fontFamily: '"Kenney Future", monospace', fontSize: '28px', color: '#ffffff' };
+const STYLE_HI = { fontFamily: '"Kenney Future", monospace', fontSize: '22px', color: '#ffdd00' };
 
 const ITEMS = ['Retry', 'Main Menu'];
 
@@ -34,17 +34,17 @@ export default class GameOverScene extends Phaser.Scene {
     // Title
     const titleText = this._won ? 'YOU WIN!' : 'GAME OVER';
     const titleColor = this._won ? '#44ff44' : '#ff4444';
-    this.add.text(CX, 50, titleText, { ...STYLE_TITLE, color: titleColor }).setOrigin(0.5);
+    this.add.text(CX, 140, titleText, { ...STYLE_TITLE, color: titleColor }).setOrigin(0.5);
 
     // Score
-    this.add.text(CX, 85, `SCORE  ${this._finalScore}`, STYLE_SCORE).setOrigin(0.5);
+    this.add.text(CX, 225, `SCORE  ${this._finalScore}`, STYLE_SCORE).setOrigin(0.5);
 
     // Capture previous top before saving so the comparison is meaningful
     const prevTop = (this.registry.get('save') ?? SaveSystem.load()).highScores[0]?.score ?? 0;
     const save = this._saveScore();
     const isNewHigh = this._finalScore > 0 && this._finalScore > prevTop;
     if (isNewHigh) {
-      const hiText = this.add.text(CX, 100, 'NEW HIGH SCORE!', STYLE_HI).setOrigin(0.5);
+      const hiText = this.add.text(CX, 270, 'NEW HIGH SCORE!', STYLE_HI).setOrigin(0.5);
       this.tweens.add({
         targets:  hiText,
         scaleX:   1.2,
@@ -57,11 +57,11 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     // Top 5 leaderboard
-    this._buildLeaderboard(save.highScores, 115);
+    this._buildLeaderboard(save.highScores, 310);
 
     // Menu items
     this._texts = ITEMS.map((label, i) =>
-      this.add.text(CX, 210 + i * 22, label, STYLE).setOrigin(0.5)
+      this.add.text(CX, 530 + i * 52, label, STYLE).setOrigin(0.5)
     );
     this._renderSelection();
     this._setupKeys();
@@ -86,20 +86,20 @@ export default class GameOverScene extends Phaser.Scene {
 
   _buildLeaderboard(scores, startY) {
     this.add.text(CX, startY, 'HIGH SCORES', {
-      fontFamily: '"Kenney Future", monospace', fontSize: '9px', color: '#888888',
+      fontFamily: '"Kenney Future", monospace', fontSize: '16px', color: '#888888',
     }).setOrigin(0.5);
 
     if (scores.length === 0) {
-      this.add.text(CX, startY + 14, 'No scores yet', {
-        fontFamily: '"Kenney Future", monospace', fontSize: '9px', color: '#444444',
+      this.add.text(CX, startY + 28, 'No scores yet', {
+        fontFamily: '"Kenney Future", monospace', fontSize: '16px', color: '#444444',
       }).setOrigin(0.5);
       return;
     }
 
     scores.slice(0, 5).forEach((entry, i) => {
-      this.add.text(CX, startY + 14 + i * 12,
+      this.add.text(CX, startY + 28 + i * 26,
         `${i + 1}.  ${String(entry.score).padStart(7)}   ${entry.ship}`, {
-          fontFamily: '"Kenney Future", monospace', fontSize: '9px', color: '#cccccc',
+          fontFamily: '"Kenney Future", monospace', fontSize: '16px', color: '#cccccc',
         }
       ).setOrigin(0.5);
     });
