@@ -4,6 +4,17 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ---
 
+## 2026-05-21
+
+### Phase 5 — Power-Ups
+
+- `src/data/powerups.js`: three type definitions (SPREAD/RAPID/SHIELD) with atlas frame names, labels, and timed flag. Distinct shape + colour per accessibility rules: blue star, green bolt, blue shield.
+- `PowerUp` entity: pool-friendly (`reset(x, y, typeId)`), auto-despawns via `delayedCall` after `POWERUP.onScreenLifetime`, `collect()` cancels timer and returns typeId.
+- `Player`: tracks `_spreadEnds`, `_rapidEnds`, `_shielded`. `applyPowerup(typeId)` sets state + registry. `_handleFire` respects rapid rate and emits 3 angled `fire` events for spread. Shield absorbs one hit, plays `sfx_shieldBreak`, applies i-frames; blue tint while active. Separate `shoot` event keeps sound playing once per fire action regardless of bullet count.
+- `GameScene`: player bullet pool bumped to 48 (covers rapid + spread); 6-slot PowerUp pool; `physics.add.overlap` for player↔powerups; `_tryDropPowerup` with guaranteed first drop in Level 1's first 30 s; `_firePlayerBullet` accepts `angleDeg` for angled spread bullets; registry initialises `powerupSpreadEnds`, `powerupRapidEnds`, `powerupShield` on create.
+- `HUDScene`: `update(time)` drives two draining timer bars (SPR blue, RPD green) in the bottom-left; shield indicator text bottom-right; registry listener for shield toggle.
+- 6 new data-validator tests for `powerups.js`. Total: 77 tests passing.
+
 ## 2026-05-20
 
 ### Phase 4 — Enemies & Levels

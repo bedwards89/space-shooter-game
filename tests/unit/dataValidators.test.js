@@ -7,6 +7,7 @@
 import { describe, it, expect } from 'vitest';
 import { LEVELS } from '../../src/data/levels.js';
 import { ENEMY_TYPES } from '../../src/data/enemies.js';
+import { POWERUP_TYPES, POWERUP_TYPE_IDS } from '../../src/data/powerups.js';
 
 // Background keys that are actually preloaded in PreloadScene.
 const VALID_BG_KEYS = new Set(['bg_black', 'bg_blue', 'bg_darkPurple', 'bg_purple']);
@@ -83,5 +84,35 @@ describe('ENEMY_TYPES data', () => {
         expect(VALID_MOVEMENTS.has(type.movement), `unknown movement "${type.movement}"`).toBe(true);
       });
     });
+  });
+});
+
+describe('POWERUP_TYPES data', () => {
+  it('exports exactly 3 types', () => {
+    expect(POWERUP_TYPE_IDS).toHaveLength(3);
+  });
+
+  it('POWERUP_TYPE_IDS matches POWERUP_TYPES keys', () => {
+    expect(POWERUP_TYPE_IDS).toEqual(Object.keys(POWERUP_TYPES));
+  });
+
+  Object.entries(POWERUP_TYPES).forEach(([key, type]) => {
+    describe(`POWERUP_TYPES.${key}`, () => {
+      it('has required fields', () => {
+        expect(typeof type.id).toBe('string');
+        expect(type.id).toBe(key);
+        expect(typeof type.frame).toBe('string');
+        expect(type.frame.endsWith('.png')).toBe(true);
+        expect(typeof type.label).toBe('string');
+        expect(type.label.length).toBeLessThanOrEqual(3);
+        expect(typeof type.timed).toBe('boolean');
+      });
+    });
+  });
+
+  it('SHIELD is not timed, SPREAD and RAPID are timed', () => {
+    expect(POWERUP_TYPES.SHIELD.timed).toBe(false);
+    expect(POWERUP_TYPES.SPREAD.timed).toBe(true);
+    expect(POWERUP_TYPES.RAPID.timed).toBe(true);
   });
 });

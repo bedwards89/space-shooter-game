@@ -10,11 +10,7 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 ## Phase 5 — Power-Ups
 
-- [ ] Implement PowerUp entity: Spread Shot, Shield, Rapid Fire
-- [ ] Drop logic: ~10% from MEDIUM/LARGE; guarantee one in first 30s of Level 1
-- [ ] HUD timer bars for time-limited power-ups
-- [ ] Stacking rules: same type refreshes, different types stack
-- [ ] Debug/cheat key for manual triggering (document in `DECISIONS.md`, strip before release)
+- [ ] Playtest power-up drops, stacking, and HUD bars (manual)
 
 ## Phase 6 — Score System
 
@@ -55,6 +51,7 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 - [ ] Screen shake (player hit, boss damage, boss death)
 - [ ] Enemy hit flash (white)
 - [ ] Boss intro: pause, name banner, music change
+- [ ] Tune sprite scales and hitboxScale values so visible sprite edges more closely match the physics body (player, all enemy archetypes, boss)
 - [ ] Stress test: ≥ 55 fps with 50 enemies + 150 bullets on screen
 
 ## Phase 11 — QA
