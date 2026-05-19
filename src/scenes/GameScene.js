@@ -186,6 +186,7 @@ export default class GameScene extends Phaser.Scene {
   // ------------------------------------------------------------------ //
 
   _onBulletHitEnemy(bullet, enemy) {
+    if (!enemy._type) return; // pooled enemy not yet activated — shouldn't happen post-fix
     bullet.disableBody(true, true);
     const killed = enemy.hit(1);
     if (killed) {

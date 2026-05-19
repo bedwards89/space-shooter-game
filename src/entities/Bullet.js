@@ -7,7 +7,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setAngle(-90); // atlas sprite is vertical; rotate to face right
-    this.setActive(false).setVisible(false);
+    this.disableBody(true, true); // body must be disabled, not just setActive, so overlaps skip it
   }
 
   // Called by GameScene to activate from the pool.

@@ -7,7 +7,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'sheet', 'enemyBlack4.png');
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.setActive(false).setVisible(false);
+    this.disableBody(true, true); // body must be disabled, not just setActive, so overlaps skip it
 
     this._type = null;
     this._hp = 0;
