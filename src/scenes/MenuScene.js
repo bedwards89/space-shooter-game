@@ -58,10 +58,12 @@ export default class MenuScene extends Phaser.Scene {
     this._renderSelection();
     this._setupKeys();
 
-    // Play menu music (unlock audio context on first interaction)
+    // Play menu music — both listeners share a ref so whichever fires first
+    // removes the other, preventing a second call on the same scene instance.
     this._music = null;
-    this.input.once('pointerdown', () => this._startMusic());
-    this.input.keyboard.once('keydown', () => this._startMusic());
+    this._unlockHandler = () => this._startMusic();
+    this.input.once('pointerdown', this._unlockHandler);
+    this.input.keyboard.once('keydown', this._unlockHandler);
   }
 
   update(time, delta) {
@@ -69,7 +71,11 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   _startMusic() {
-    if (this._music) return;
+    // Cancel the sibling listener that didn't fire.
+    this.input.off('pointerdown', this._unlockHandler);
+    this.input.keyboard.off('keydown', this._unlockHandler);
+    if (this._music?.isPlaying) return;
+    this._music?.destroy();
     this._music = this.sound.add('music_menu', { loop: true, volume: this._getMusicVol() });
     this._music.play();
   }
@@ -105,7 +111,7 @@ export default class MenuScene extends Phaser.Scene {
 
   _startGame() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    if (this._music) this._music.stop();
+    this._music?.destroy(); this._music = null;
     this.cameras.main.fade(300, 0, 0, 0, false, (cam, progress) => {
       if (progress === 1) this.scene.start('Game');
     });
@@ -113,13 +119,13 @@ export default class MenuScene extends Phaser.Scene {
 
   _shipSelect() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    if (this._music) this._music.stop();
+    this._music?.destroy(); this._music = null;
     this.scene.start('ShipSelect');
   }
 
   _credits() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    if (this._music) this._music.stop();
+    this._music?.destroy(); this._music = null;
     this.scene.start('Credits');
   }
 
