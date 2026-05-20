@@ -16,9 +16,15 @@ const config = {
   height: GAME_HEIGHT,
   backgroundColor: '#000011',
   pixelArt: false,
+  render: {
+    antialias: true,
+    antialiasGL: true,
+    roundPixels: false,
+  },
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    resolution: window.devicePixelRatio || 1,
   },
   physics: {
     default: 'arcade',
