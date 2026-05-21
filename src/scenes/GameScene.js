@@ -10,6 +10,7 @@ import Player  from '../entities/Player.js';
 import Bullet  from '../entities/Bullet.js';
 import Enemy   from '../entities/Enemy.js';
 import PowerUp from '../entities/PowerUp.js';
+import { Explosion } from '../entities/Explosion.js';
 
 const CX = GAME_WIDTH / 2;
 const CY = GAME_HEIGHT / 2;
@@ -230,8 +231,7 @@ export default class GameScene extends Phaser.Scene {
         this._lastMultiplier = mult;
         this.registry.set('combo', mult);
       }
-      this.sound.play('sfx_explosion', { volume: this._getSfxVol() * 0.7 });
-      this.cameras.main.shake(60, 0.005);
+      this._spawnKillFX(enemy.x, enemy.y, enemy._type.id);
       this._tryDropPowerup(enemy.x, enemy.y, enemy._type.dropChance);
     } else {
       this.sound.play('sfx_enemyHit', { volume: this._getSfxVol() * 0.6 });
@@ -258,10 +258,28 @@ export default class GameScene extends Phaser.Scene {
 
   // ------------------------------------------------------------------ //
 
+  _spawnKillFX(x, y, typeId) {
+    const vol = this._getSfxVol();
+    if (typeId === 'BOSS') {
+      Explosion.spawnLarge(this, x, y);
+      this.cameras.main.shake(500, 0.025);
+      this.sound.play('sfx_explosionLarge', { volume: vol });
+    } else if (typeId === 'LARGE' || typeId === 'MEDIUM' || typeId === 'TURRET') {
+      Explosion.spawnMedium(this, x, y);
+      this.cameras.main.shake(120, 0.010);
+      this.sound.play('sfx_explosion', { volume: vol * 0.85 });
+    } else {
+      Explosion.spawnSmall(this, x, y);
+      this.cameras.main.shake(60, 0.005);
+      this.sound.play('sfx_explosion', { volume: vol * 0.7 });
+    }
+  }
+
   _onPlayerDied() {
     this._dead = true;
+    Explosion.spawnLarge(this, this._player.x, this._player.y);
     this.sound.play('sfx_playerDeath', { volume: this._getSfxVol() });
-    this.cameras.main.shake(300, 0.015);
+    this.cameras.main.shake(300, 0.020);
 
     this.time.delayedCall(1200, () => {
       this.scene.stop('HUD');
