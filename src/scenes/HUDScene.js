@@ -29,6 +29,14 @@ export default class HUDScene extends Phaser.Scene {
     this._lives = PLAYER.lives;
     this._combo = 1;
 
+    // Level indicator — static, set once on create
+    const levelNum  = this.registry.get('levelNum')  ?? 1;
+    const levelName = this.registry.get('levelName') ?? '';
+    this.add.text(GAME_WIDTH / 2, 14,
+      levelName ? `LEVEL ${levelNum}  —  ${levelName}` : `LEVEL ${levelNum}`,
+      { ...STYLE_TINY, color: '#555555' }
+    ).setOrigin(0.5, 0);
+
     // Score
     this._scoreTxt = this.add.text(16, 14, 'SCORE  0', STYLE);
 

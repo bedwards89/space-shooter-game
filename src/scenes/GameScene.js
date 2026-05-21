@@ -55,6 +55,8 @@ export default class GameScene extends Phaser.Scene {
     this.registry.set('powerupSpreadEnds', 0);
     this.registry.set('powerupRapidEnds',  0);
     this.registry.set('powerupShield',     false);
+    this.registry.set('levelNum',          levelNum);
+    this.registry.set('levelName',         this._levelData.name ?? '');
 
     InputManager.init(this);
     this.scene.launch('HUD');
@@ -320,9 +322,13 @@ export default class GameScene extends Phaser.Scene {
 
     if (levelNum >= 3) {
       AudioManager.stopMusic();
-      this.time.delayedCall(1500, () => {
-        this.scene.stop('HUD');
-        this.scene.start('GameOver', { score, ship: shipId, won: true });
+      this.time.delayedCall(1200, () => {
+        this.cameras.main.fade(300, 0, 0, 0, false, (cam, progress) => {
+          if (progress === 1) {
+            this.scene.stop('HUD');
+            this.scene.start('GameOver', { score, ship: shipId, won: true });
+          }
+        });
       });
     } else {
       const banner = this.add.text(CX, CY, 'LEVEL COMPLETE', {
@@ -331,11 +337,15 @@ export default class GameScene extends Phaser.Scene {
         color: '#44ff44',
       }).setOrigin(0.5).setDepth(10);
 
-      this.time.delayedCall(2000, () => {
-        banner.destroy();
-        this.registry.set('currentLevel', levelNum + 1);
+      this.time.delayedCall(1700, () => {
         this.scene.stop('HUD');
-        this.scene.restart();
+        this.cameras.main.fade(300, 0, 0, 0, false, (cam, progress) => {
+          if (progress === 1) {
+            banner.destroy();
+            this.registry.set('currentLevel', levelNum + 1);
+            this.scene.restart();
+          }
+        });
       });
     }
   }

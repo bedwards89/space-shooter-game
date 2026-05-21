@@ -25,7 +25,9 @@ export default class ShipSelectScene extends Phaser.Scene {
     const save = this.registry.get('save');
     this._unlocked = save?.unlockedShips ?? ['Comet'];
     this._sel = 0;
+    this._transitioning = false;
 
+    this.cameras.main.fadeIn(250);
     AudioManager.playMusic('music_menu');
 
     // Background
@@ -105,9 +107,9 @@ export default class ShipSelectScene extends Phaser.Scene {
   }
 
   _confirm() {
+    if (this._transitioning) return;
     const ship = SHIPS[this._sel];
     if (this._cards[this._sel].locked) {
-      // Shake the locked ship to indicate it can't be selected
       this.tweens.add({
         targets: this._cards[this._sel].sprite,
         x: { from: this._cards[this._sel].sprite.x - 4, to: this._cards[this._sel].sprite.x + 4 },
@@ -115,13 +117,22 @@ export default class ShipSelectScene extends Phaser.Scene {
       });
       return;
     }
+    this._transitioning = true;
     this.registry.set('selectedShip', ship.id);
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    this.scene.start('Menu');
+    this._goBack();
   }
 
   _back() {
-    this.scene.start('Menu');
+    if (this._transitioning) return;
+    this._transitioning = true;
+    this._goBack();
+  }
+
+  _goBack() {
+    this.cameras.main.fade(250, 0, 0, 0, false, (cam, progress) => {
+      if (progress === 1) this.scene.start('Menu');
+    });
   }
 
   _getSfxVol() {

@@ -28,6 +28,8 @@ export default class GameOverScene extends Phaser.Scene {
     this._sel       = 0;
     this._confirmed = false;
 
+    this.cameras.main.fadeIn(300);
+
     // Background
     this.add.rectangle(CX, CY, GAME_WIDTH, GAME_HEIGHT, 0x000011);
 
@@ -120,12 +122,16 @@ export default class GameOverScene extends Phaser.Scene {
   _confirm() {
     if (this._confirmed) return;
     this._confirmed = true;
-    if (this._sel === 0) {
-      this.registry.set('currentLevel', 1);
-      this.scene.start('Game');
-    } else {
-      this.scene.start('Menu');
-    }
+    this.cameras.main.fade(250, 0, 0, 0, false, (cam, progress) => {
+      if (progress === 1) {
+        if (this._sel === 0) {
+          this.registry.set('currentLevel', 1);
+          this.scene.start('Game');
+        } else {
+          this.scene.start('Menu');
+        }
+      }
+    });
   }
 
   _renderSelection() {

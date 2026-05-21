@@ -36,6 +36,9 @@ export default class CreditsScene extends Phaser.Scene {
   }
 
   create() {
+    this._transitioning = false;
+
+    this.cameras.main.fadeIn(250);
     AudioManager.playMusic('music_menu');
 
     this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_black');
@@ -59,8 +62,16 @@ export default class CreditsScene extends Phaser.Scene {
 
     this.add.text(CX, GAME_HEIGHT - 20, 'ESC or ENTER — Back', STYLE).setOrigin(0.5);
 
-    this.input.keyboard.on('keydown-ESC',   () => this.scene.start('Menu'));
-    this.input.keyboard.on('keydown-ENTER', () => this.scene.start('Menu'));
-    this.input.keyboard.on('keydown-SPACE', () => this.scene.start('Menu'));
+    this.input.keyboard.on('keydown-ESC',   () => this._back());
+    this.input.keyboard.on('keydown-ENTER', () => this._back());
+    this.input.keyboard.on('keydown-SPACE', () => this._back());
+  }
+
+  _back() {
+    if (this._transitioning) return;
+    this._transitioning = true;
+    this.cameras.main.fade(250, 0, 0, 0, false, (cam, progress) => {
+      if (progress === 1) this.scene.start('Menu');
+    });
   }
 }

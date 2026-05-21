@@ -28,8 +28,25 @@ export default class MenuScene extends Phaser.Scene {
     this._sel = 0;
     this._confirming = false;
 
+    this.cameras.main.fadeIn(250);
+
     // Parallax background
     this._bg = this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_darkPurple');
+
+    // Animated starfield — particles drift right-to-left at varying speeds and scales
+    this.add.particles(GAME_WIDTH + 30, GAME_HEIGHT / 2, 'sheet', {
+      frame: ['star1.png', 'star2.png', 'star3.png'],
+      x:      { min: -30, max: 30 },
+      y:      { min: -GAME_HEIGHT / 2, max: GAME_HEIGHT / 2 },
+      lifespan:  9000,
+      speedX:    { min: -240, max: -50 },
+      speedY:    { min: -10,  max: 10  },
+      scale:     { min: 0.12, max: 0.5 },
+      alpha:     { start: 1.0, end: 0   },
+      blendMode: 'ADD',
+      frequency: 60,
+      quantity:  1,
+    }).setDepth(0);
 
     // Title
     this.add.text(CX, 160, 'STARWAKE', STYLE_TITLE).setOrigin(0.5);

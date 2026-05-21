@@ -6,6 +6,17 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ## 2026-05-21
 
+### Phase 9 — UI / UX Polish
+
+- `MenuScene`: animated particle starfield — stars drift right-to-left at varying speeds and scales using the `sheet` atlas star frames; blended with ADD for a glow effect. `cameras.main.fadeIn(250)` on every create().
+- `HUDScene`: level name text added to top-center (e.g. "LEVEL 1 — Asteroid Belt") in a dimmed small font. `GameScene` sets `levelNum` and `levelName` in the registry before launching HUD.
+- Scene fade transitions — 250–300 ms fade-out before all scene changes, fade-in on arrival:
+  - `GameScene._onLevelComplete()`: camera fades to black before `scene.restart()` (level progression) or `scene.start('GameOver')` (final win). Total elapsed time matches previous 2 s banner duration.
+  - `GameOverScene`: fades in on create; fades out before scene.start on confirm.
+  - `ShipSelectScene`: fades in on create; `_transitioning` guard + fade-out on confirm and back.
+  - `CreditsScene`: fades in on create; `_transitioning` guard + fade-out on back.
+- Remaining Phase 9 items already complete from earlier phases: consistent Kenney Future font, pause overlay dim, credits scene with CC-BY attributions, full HUD (score/lives/combo/power-up timers). Asset replacement deferred (see memory note).
+
 ### Phase 8 — Audio
 
 - `AudioManager`: implemented `playMusic(key)` (looped, deduped), `stopMusic()`, `setMusicVolume(v)` (live update on active track), `setSfxVolume(v)`. Stores the game-level sound manager (`scene.sound`) so it works across all scenes without requiring re-init.

@@ -12,16 +12,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 - [ ] Playtest power-up drops, stacking, and HUD bars (manual)
 
-## Phase 9 — UI / UX Polish
-
-- [ ] Animated title screen / starfield
-- [ ] Consistent pixel font across all UI
-- [ ] Full HUD: score, lives icons, combo, power-up timers, level name
-- [ ] Pause overlay dim
-- [ ] Credits scene with all CC-BY attributions
-- [ ] Scene fade transitions (200–400 ms)
-- [ ] Consider replacing Kenney sprite sheet with higher-resolution or vector-style assets for smoother look at 1280×720 (current assets are ~100px pixel art, bilinear filtering only goes so far)
-
 ## Phase 10 — Game Feel & Polish
 
 - [ ] Explosion particles, engine trails, power-up sparkles
