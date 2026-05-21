@@ -7,7 +7,7 @@ const DEFAULTS = {
   unlockedShips: ['Comet'],
   highestLevelCleared: 0,
   totalRunsPlayed: 0,
-  settings: { musicVolume: 0.7, sfxVolume: 0.8 },
+  settings: { musicVolume: 0.1, sfxVolume: 0.1 },
 };
 
 function _num(v, fallback) {
