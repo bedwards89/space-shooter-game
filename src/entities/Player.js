@@ -34,7 +34,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.setScale(ship.scale).setAngle(90);
     const fw = this.frame.realWidth;
     const fh = this.frame.realHeight;
-    this.body.setSize(fh, fw);
+    const hs = ship.hitboxScale ?? 0.55;
+    this.body.setSize(fh * hs, fw * hs);
 
     this.setCollideWorldBounds(true);
   }
