@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
+import { AudioManager } from '../systems/AudioManager.js';
 import { version } from '../../package.json';
 
 const CX = GAME_WIDTH / 2;
@@ -59,31 +60,19 @@ export default class MenuScene extends Phaser.Scene {
     this._renderSelection();
     this._setupKeys();
 
-    // Play menu music — both listeners share a ref so whichever fires first
-    // removes the other, preventing a second call on the same scene instance.
-    this._music = null;
-    this._unlockHandler = () => this._startMusic();
+    // Start menu music on first user interaction (audio context unlock).
+    // Both listeners share a ref; whichever fires first removes the other.
+    this._unlockHandler = () => {
+      this.input.off('pointerdown', this._unlockHandler);
+      this.input.keyboard.off('keydown', this._unlockHandler);
+      AudioManager.playMusic('music_menu');
+    };
     this.input.once('pointerdown', this._unlockHandler);
     this.input.keyboard.once('keydown', this._unlockHandler);
   }
 
   update(time, delta) {
     this._bg.tilePositionX += (delta / 1000) * 20;
-  }
-
-  _startMusic() {
-    // Cancel the sibling listener that didn't fire.
-    this.input.off('pointerdown', this._unlockHandler);
-    this.input.keyboard.off('keydown', this._unlockHandler);
-    if (this._music?.isPlaying) return;
-    this._music?.destroy();
-    this._music = this.sound.add('music_menu', { loop: true, volume: this._getMusicVol() });
-    this._music.play();
-  }
-
-  _getMusicVol() {
-    const save = this.registry.get('save');
-    return save?.settings?.musicVolume ?? 0.7;
   }
 
   _setupKeys() {
@@ -112,7 +101,7 @@ export default class MenuScene extends Phaser.Scene {
 
   _startGame() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    this._music?.destroy(); this._music = null;
+    AudioManager.stopMusic();
     this.registry.set('currentLevel', 1);
     this.cameras.main.fade(300, 0, 0, 0, false, (cam, progress) => {
       if (progress === 1) this.scene.start('Game');
@@ -121,13 +110,11 @@ export default class MenuScene extends Phaser.Scene {
 
   _shipSelect() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    this._music?.destroy(); this._music = null;
     this.scene.start('ShipSelect');
   }
 
   _credits() {
     this.sound.play('sfx_menuConfirm', { volume: this._getSfxVol() });
-    this._music?.destroy(); this._music = null;
     this.scene.start('Credits');
   }
 

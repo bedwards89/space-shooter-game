@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 import { SHIPS } from '../data/ships.js';
+import { AudioManager } from '../systems/AudioManager.js';
 
 const CX = GAME_WIDTH / 2;
 const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '20px', color: '#ffffff' };
@@ -24,6 +25,8 @@ export default class ShipSelectScene extends Phaser.Scene {
     const save = this.registry.get('save');
     this._unlocked = save?.unlockedShips ?? ['Comet'];
     this._sel = 0;
+
+    AudioManager.playMusic('music_menu');
 
     // Background
     this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_black');

@@ -12,14 +12,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 - [ ] Playtest power-up drops, stacking, and HUD bars (manual)
 
-## Phase 8 — Audio
-
-- [ ] Implement `AudioManager.playMusic()` / `stopMusic()` / `playSfx()`
-- [ ] Assign SFX to all game events
-- [ ] Music volume and SFX volume sliders in settings menu
-- [ ] Audio context unlock on first user interaction
-- [ ] Test: no gap on loop, no clipping at max volume
-
 ## Phase 9 — UI / UX Polish
 
 - [ ] Animated title screen / starfield

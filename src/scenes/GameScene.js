@@ -4,6 +4,7 @@ import { LEVELS } from '../data/levels.js';
 import { POWERUP_TYPE_IDS } from '../data/powerups.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
 import { ScoreSystem } from '../systems/ScoreSystem.js';
+import { AudioManager } from '../systems/AudioManager.js';
 import { InputManager } from '../systems/InputManager.js';
 import { SpawnSystem, getSpawnPositions } from '../systems/SpawnSystem.js';
 import Player  from '../entities/Player.js';
@@ -57,6 +58,9 @@ export default class GameScene extends Phaser.Scene {
 
     InputManager.init(this);
     this.scene.launch('HUD');
+
+    const musicKey = levelNum <= 1 ? 'music_level1' : 'music_level2';
+    AudioManager.playMusic(musicKey);
   }
 
   update(time, delta) {
@@ -170,6 +174,8 @@ export default class GameScene extends Phaser.Scene {
     if (!pool) return;
     if (type === 'BOSS' && pool.some((e) => e.active)) return;
 
+    if (type === 'BOSS') AudioManager.playMusic('music_boss');
+
     const yPositions = getSpawnPositions(count, formation);
     yPositions.forEach((y, i) => {
       const enemy = pool.find((e) => !e.active);
@@ -197,6 +203,7 @@ export default class GameScene extends Phaser.Scene {
       const rad = Phaser.Math.DegToRad(deg);
       b.fire(x - 10, y, -ENEMY.bulletSpeed * Math.cos(rad), ENEMY.bulletSpeed * Math.sin(rad));
     });
+    this.sound.play('sfx_enemyShoot', { volume: this._getSfxVol() * 0.45 });
   }
 
   _tryDropPowerup(x, y, dropChance) {
@@ -263,7 +270,7 @@ export default class GameScene extends Phaser.Scene {
     if (typeId === 'BOSS') {
       Explosion.spawnLarge(this, x, y);
       this.cameras.main.shake(500, 0.025);
-      this.sound.play('sfx_explosionLarge', { volume: vol });
+      this.sound.play('sfx_bossDeath', { volume: vol });
     } else if (typeId === 'LARGE' || typeId === 'MEDIUM' || typeId === 'TURRET') {
       Explosion.spawnMedium(this, x, y);
       this.cameras.main.shake(120, 0.010);
@@ -277,6 +284,7 @@ export default class GameScene extends Phaser.Scene {
 
   _onPlayerDied() {
     this._dead = true;
+    AudioManager.stopMusic();
     Explosion.spawnLarge(this, this._player.x, this._player.y);
     this.sound.play('sfx_playerDeath', { volume: this._getSfxVol() });
     this.cameras.main.shake(300, 0.020);
@@ -311,6 +319,7 @@ export default class GameScene extends Phaser.Scene {
     this.sound.play('sfx_levelComplete', { volume: this._getSfxVol() });
 
     if (levelNum >= 3) {
+      AudioManager.stopMusic();
       this.time.delayedCall(1500, () => {
         this.scene.stop('HUD');
         this.scene.start('GameOver', { score, ship: shipId, won: true });

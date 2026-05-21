@@ -6,6 +6,15 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ## 2026-05-21
 
+### Phase 8 — Audio
+
+- `AudioManager`: implemented `playMusic(key)` (looped, deduped), `stopMusic()`, `setMusicVolume(v)` (live update on active track), `setSfxVolume(v)`. Stores the game-level sound manager (`scene.sound`) so it works across all scenes without requiring re-init.
+- `PreloadScene`: calls `AudioManager.init(this, save.settings)` after loading save, so volume settings are applied from the start.
+- `MenuScene`: replaced inline music object with `AudioManager.playMusic('music_menu')` called from the existing audio-context unlock handler. Removed `_startMusic()` / `_getMusicVol()`. Music continues seamlessly into ShipSelect and Credits.
+- `ShipSelectScene` / `CreditsScene`: call `AudioManager.playMusic('music_menu')` in `create()` — no-op if already playing, starts it if first interaction happened earlier.
+- `GameScene`: plays `music_level1` on levels 1+, `music_level2` on levels 2+; switches to `music_boss` when a BOSS wave spawns. Calls `AudioManager.stopMusic()` on player death and on final level win. Added `sfx_enemyShoot` (plays on every enemy fire burst at 45% SFX vol). Switched boss kill from `sfx_explosionLarge` to `sfx_bossDeath`.
+- `PauseScene`: added Music Vol and SFX Vol slider items (LEFT/RIGHT to adjust in 10% steps, persisted to save on each change). Calls `AudioManager.stopMusic()` before quitting to menu.
+
 ### Phase 7 — Save System
 
 - `SaveSystem`: rewrote with `_repair()` for field-by-field validation and defaults. `_num()` helper rejects non-finite numbers. `_validScoreEntry()` validates score entries. `migrate()` always calls `_repair()` last so any future migration step can't leave gaps. `reset()` now guards `localStorage.removeItem()` in try/catch for storage-disabled environments.

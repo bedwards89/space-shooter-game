@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
+import { AudioManager } from '../systems/AudioManager.js';
 
 const CX = GAME_WIDTH / 2;
 const CY = GAME_HEIGHT / 2;
@@ -54,6 +55,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.registry.set('save', save);
     this.registry.set('selectedShip', save.unlockedShips[0] ?? 'Comet');
     this.registry.set('currentLevel', 1);
+
+    AudioManager.init(this, save.settings);
 
     this.scene.start('Menu');
   }

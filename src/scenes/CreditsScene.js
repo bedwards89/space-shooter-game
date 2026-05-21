@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config.js';
+import { AudioManager } from '../systems/AudioManager.js';
 
 const CX = GAME_WIDTH / 2;
 const STYLE = { fontFamily: '"Kenney Future", monospace', fontSize: '16px', color: '#aaaaaa' };
@@ -35,6 +36,8 @@ export default class CreditsScene extends Phaser.Scene {
   }
 
   create() {
+    AudioManager.playMusic('music_menu');
+
     this.add.tileSprite(CX, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 'bg_black');
 
     this.add.text(CX, 40, 'CREDITS', STYLE_TITLE).setOrigin(0.5);
