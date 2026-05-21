@@ -11,6 +11,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
 
     this._typeId      = null;
     this._expireEvent = null;
+    this._sparkle     = null;
   }
 
   // Activate from pool at a world position with the given type.
@@ -20,10 +21,27 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     this.enableBody(true, x, y, true, true);
     this.setVelocityX(-POWERUP.driftSpeed);
 
+    this._sparkle?.destroy();
+    this._sparkle = this.scene.add.particles(0, 0, 'sheet', {
+      frame: ['star1.png', 'star2.png'],
+      follow: this,
+      lifespan: 500,
+      speed: { min: 20, max: 55 },
+      scale: { start: 0.45, end: 0 },
+      alpha: { start: 0.75, end: 0 },
+      blendMode: 'ADD',
+      frequency: 90,
+      angle: { min: 0, max: 360 },
+    }).setDepth(3);
+
     // Auto-despawn if the player doesn't collect it in time.
     this._expireEvent = this.scene.time.delayedCall(
       POWERUP.onScreenLifetime,
-      () => { if (this.active) this.disableBody(true, true); }
+      () => {
+        if (this.active) this.disableBody(true, true);
+        this._sparkle?.destroy();
+        this._sparkle = null;
+      }
     );
   }
 
@@ -31,6 +49,8 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
   collect() {
     this._expireEvent?.remove();
     this.disableBody(true, true);
+    this._sparkle?.destroy();
+    this._sparkle = null;
     return this._typeId;
   }
 }

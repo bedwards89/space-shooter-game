@@ -82,12 +82,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene.sound.play('sfx_shieldBreak', {
         volume: this.scene.registry.get('save')?.settings?.sfxVolume ?? 0.8,
       });
+      this.emit('shieldBroke');
       this._startInvuln();
       return false;
     }
 
     this._lives--;
     this.emit('livesChanged', this._lives);
+    this.emit('lostLife');
 
     if (this._lives <= 0) {
       this._alive = false;

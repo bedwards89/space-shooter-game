@@ -148,6 +148,23 @@ export default class GameScene extends Phaser.Scene {
     this._player.on('shoot',        ()           => this.sound.play('sfx_shoot', { volume: this._getSfxVol() * 0.6 }));
     this._player.on('livesChanged', (lives)      => this.registry.set('lives', lives));
     this._player.on('died',         ()           => this._onPlayerDied());
+    this._player.on('lostLife',     ()           => this.cameras.main.shake(160, 0.012));
+    this._player.on('shieldBroke',  ()           => this.cameras.main.shake(90, 0.007));
+
+    this._engineTrail = this.add.particles(0, 0, 'sheet', {
+      frame: ['star1.png', 'star2.png'],
+      follow: this._player,
+      followOffset: { x: -28, y: 0 },
+      lifespan: 220,
+      speed: { min: 15, max: 50 },
+      scale: { start: 0.5, end: 0 },
+      alpha: { start: 0.65, end: 0 },
+      blendMode: 'ADD',
+      frequency: 38,
+      angle: { min: 155, max: 205 },
+      tint: [0xff8800, 0xffcc00, 0xff4400],
+    }).setDepth(2);
+    this._player.on('died', () => { if (this._engineTrail) this._engineTrail.stop(); });
   }
 
   _setupColliders() {
@@ -176,7 +193,10 @@ export default class GameScene extends Phaser.Scene {
     if (!pool) return;
     if (type === 'BOSS' && pool.some((e) => e.active)) return;
 
-    if (type === 'BOSS') AudioManager.playMusic('music_boss');
+    if (type === 'BOSS') {
+      AudioManager.playMusic('music_boss');
+      this._showBossIntro(this._levelData.boss.name);
+    }
 
     const yPositions = getSpawnPositions(count, formation);
     yPositions.forEach((y, i) => {
@@ -244,6 +264,7 @@ export default class GameScene extends Phaser.Scene {
       this._tryDropPowerup(enemy.x, enemy.y, enemy._type.dropChance);
     } else {
       this.sound.play('sfx_enemyHit', { volume: this._getSfxVol() * 0.6 });
+      if (enemy._type.id === 'BOSS') this.cameras.main.shake(65, 0.006);
     }
   }
 
@@ -348,6 +369,31 @@ export default class GameScene extends Phaser.Scene {
         });
       });
     }
+  }
+
+  _showBossIntro(bossName) {
+    this.cameras.main.shake(300, 0.015);
+
+    const warn = this.add.text(CX, CY - 48, '! WARNING !', {
+      fontFamily: '"Kenney Future", monospace',
+      fontSize: '36px',
+      color: '#ff3333',
+    }).setOrigin(0.5).setDepth(15).setAlpha(0);
+
+    const name = this.add.text(CX, CY + 16, bossName, {
+      fontFamily: '"Kenney Future", monospace',
+      fontSize: '54px',
+      color: '#ffaa00',
+    }).setOrigin(0.5).setDepth(15).setAlpha(0);
+
+    this.tweens.add({
+      targets: [warn, name],
+      alpha: 1,
+      duration: 350,
+      yoyo: true,
+      hold: 1400,
+      onComplete: () => { warn.destroy(); name.destroy(); },
+    });
   }
 
   _openPause() {

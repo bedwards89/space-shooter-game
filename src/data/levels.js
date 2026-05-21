@@ -21,7 +21,7 @@ export const LEVELS = [
       { time: 40000, type: 'SMALL',  count: 8, formation: 'random' },
       { time: 55000, type: 'BOSS',   count: 1, formation: 'single' },
     ],
-    boss: { hp: 40, scoreValue: 5000 },
+    boss: { name: 'SHADOW COMMANDER', hp: 40, scoreValue: 5000 },
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ export const LEVELS = [
       { time: 40000, type: 'SMALL',  count: 8, formation: 'v'      },
       { time: 50000, type: 'BOSS',   count: 1, formation: 'single' },
     ],
-    boss: { hp: 70, scoreValue: 5000 },
+    boss: { name: 'VOID DREADNOUGHT', hp: 70, scoreValue: 5000 },
   },
   {
     id: 3,
@@ -58,6 +58,6 @@ export const LEVELS = [
       { time: 45000, type: 'LARGE',  count: 3,  formation: 'random' },
       { time: 60000, type: 'BOSS',   count: 1,  formation: 'single' },
     ],
-    boss: { hp: 120, scoreValue: 5000 },
+    boss: { name: 'NEXUS PRIME', hp: 120, scoreValue: 5000 },
   },
 ];
