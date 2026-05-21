@@ -12,14 +12,6 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 
 - [ ] Playtest power-up drops, stacking, and HUD bars (manual)
 
-## Phase 7 — Save System
-
-- [ ] Implement `SaveSystem.load()` / `save()` / `reset()` / `migrate()`
-- [ ] Auto-save on level clear, game over, settings change
-- [ ] "Reset Save" menu option with confirmation
-- [ ] Handle: corrupted JSON, missing keys, localStorage disabled, quota exceeded
-- [ ] Write unit tests for SaveSystem (all edge cases)
-
 ## Phase 8 — Audio
 
 - [ ] Implement `AudioManager.playMusic()` / `stopMusic()` / `playSfx()`
@@ -36,6 +28,7 @@ Tasks are removed when complete. Completed work lives in `changelog.md`.
 - [ ] Pause overlay dim
 - [ ] Credits scene with all CC-BY attributions
 - [ ] Scene fade transitions (200–400 ms)
+- [ ] Consider replacing Kenney sprite sheet with higher-resolution or vector-style assets for smoother look at 1280×720 (current assets are ~100px pixel art, bilinear filtering only goes so far)
 
 ## Phase 10 — Game Feel & Polish
 

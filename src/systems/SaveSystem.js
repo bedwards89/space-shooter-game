@@ -1,7 +1,7 @@
 const SAVE_KEY = 'starwake-save-v1';
 const CURRENT_SCHEMA_VERSION = 1;
 
-const DEFAULT_SAVE = {
+const DEFAULTS = {
   schemaVersion: CURRENT_SCHEMA_VERSION,
   highScores: [],
   unlockedShips: ['Comet'],
@@ -10,16 +10,50 @@ const DEFAULT_SAVE = {
   settings: { musicVolume: 0.7, sfxVolume: 0.8 },
 };
 
-// Phase 7: full implementation with migrate(), quota handling, corruption recovery.
+function _num(v, fallback) {
+  return typeof v === 'number' && isFinite(v) ? v : fallback;
+}
+
+function _validScoreEntry(e) {
+  return e != null
+    && typeof e.score === 'number'
+    && typeof e.ship  === 'string'
+    && typeof e.date  === 'string';
+}
+
+// Reconstruct the save document field-by-field, filling any missing or
+// invalid keys with defaults. Called after every load and migrate so the
+// rest of the game can trust the shape unconditionally.
+function _repair(data) {
+  const d = data ?? {};
+  const ships = Array.isArray(d.unlockedShips)
+    ? d.unlockedShips.filter((s) => typeof s === 'string')
+    : [];
+
+  return {
+    schemaVersion:       CURRENT_SCHEMA_VERSION,
+    highScores:          Array.isArray(d.highScores)
+                           ? d.highScores.filter(_validScoreEntry).slice(0, 5)
+                           : [],
+    unlockedShips:       ships.length > 0 ? ships : ['Comet'],
+    highestLevelCleared: _num(d.highestLevelCleared, 0),
+    totalRunsPlayed:     _num(d.totalRunsPlayed,     0),
+    settings: {
+      musicVolume: _num(d.settings?.musicVolume, DEFAULTS.settings.musicVolume),
+      sfxVolume:   _num(d.settings?.sfxVolume,   DEFAULTS.settings.sfxVolume),
+    },
+  };
+}
+
 export const SaveSystem = {
   load() {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
-      if (!raw) return structuredClone(DEFAULT_SAVE);
+      if (!raw) return _repair(null);
       const data = JSON.parse(raw);
       return this.migrate(data.schemaVersion ?? 0, data);
     } catch {
-      return structuredClone(DEFAULT_SAVE);
+      return _repair(null);
     }
   },
 
@@ -32,13 +66,22 @@ export const SaveSystem = {
   },
 
   reset() {
-    localStorage.removeItem(SAVE_KEY);
-    return structuredClone(DEFAULT_SAVE);
+    try {
+      localStorage.removeItem(SAVE_KEY);
+    } catch {
+      // Storage disabled — silently degrade.
+    }
+    return _repair(null);
   },
 
   migrate(fromVersion, data) {
-    // Add migration steps here as schema evolves.
-    // e.g., if (fromVersion < 2) { data.newField = default; data.schemaVersion = 2; }
-    return { ...structuredClone(DEFAULT_SAVE), ...data, schemaVersion: CURRENT_SCHEMA_VERSION };
+    // Add incremental version steps here as the schema evolves.
+    // Each block mutates data in-place then falls through to the next.
+    // Example for a future v2:
+    //   if (fromVersion < 2) { data.newField = 'default'; }
+    //
+    // _repair() runs last to fill any gaps the migration left and
+    // stamp the current schemaVersion.
+    return _repair(data);
   },
 };

@@ -4,6 +4,14 @@ Completed work, newest first. Tasks move here from `todo.md` when done.
 
 ---
 
+## 2026-05-21
+
+### Phase 7 — Save System
+
+- `SaveSystem`: rewrote with `_repair()` for field-by-field validation and defaults. `_num()` helper rejects non-finite numbers. `_validScoreEntry()` validates score entries. `migrate()` always calls `_repair()` last so any future migration step can't leave gaps. `reset()` now guards `localStorage.removeItem()` in try/catch for storage-disabled environments.
+- Fixes: shallow `{...DEFAULT, ...data}` spread silently dropped nested `settings` keys (e.g. missing `sfxVolume`); now each nested field is explicitly validated and defaulted.
+- Tests: 18 SaveSystem tests covering load defaults, corrupted JSON, `localStorage` disabled (getItem throws), quota exceeded (setItem throws), partial settings, invalid score entries, score trimming to 5, invalid `unlockedShips`, non-finite numerics, save/load roundtrip, reset with storage disabled, and v0 migration. Total: 97 tests passing.
+
 ## 2026-05-22
 
 ### Bug Fix — Retry freeze
